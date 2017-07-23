@@ -16,7 +16,7 @@ export class ScreenController {
 
     private get(req: Request, res: Response)    {
         // Return for example res.json(User.find(req.query.id));
-        
+        this.testMethod();
         res.json({
             message: 'Screen',
         });
@@ -43,7 +43,9 @@ export class ScreenController {
     }
 
     private initRoutes()    {
-        this.router.get('/', this.get);
+        this.router.get('/', (req: Request, res: Response) => {
+            this.get(req, res);
+        });
         this.router.post('/', this.newScreen);
         // this.getIdFromName();
     }

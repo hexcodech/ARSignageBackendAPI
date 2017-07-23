@@ -11,6 +11,7 @@ var ScreenController = (function () {
         console.log('test');
     };
     ScreenController.prototype.get = function (req, res) {
+        this.testMethod();
         res.json({
             message: 'Screen',
         });
@@ -29,7 +30,10 @@ var ScreenController = (function () {
         ScreenClass_1.default.totalScreens++;
     };
     ScreenController.prototype.initRoutes = function () {
-        this.router.get('/', this.get);
+        var _this = this;
+        this.router.get('/', function (req, res) {
+            _this.get(req, res);
+        });
         this.router.post('/', this.newScreen);
     };
     return ScreenController;
