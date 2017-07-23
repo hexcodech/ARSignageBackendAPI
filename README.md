@@ -1,4 +1,4 @@
-##### Template project for express node applications written in TypeScript with tests
+##### Node.js backend and Rest-API for the AdventureRooms digital signage suite written in TypeScript
 
 ###### Directory structure:
 

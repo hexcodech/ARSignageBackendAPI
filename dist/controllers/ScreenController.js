@@ -7,25 +7,30 @@ var ScreenController = (function () {
         this.router = express_1.Router();
         this.initRoutes();
     }
+    ScreenController.prototype.testMethod = function () {
+        console.log('test');
+    };
     ScreenController.prototype.get = function (req, res) {
         res.json({
             message: 'Screen',
         });
     };
     ScreenController.prototype.newScreen = function (req, res) {
-        var ScreenId = req.params.id;
-        ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens] = new ScreenClass_1.default('ScreenId');
-        console.log(ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens]);
+        var newScreenName = req.body.id;
+        console.log(newScreenName);
+        ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens] = new ScreenClass_1.default(newScreenName);
+        this.testMethod();
+        console.log(JSON.stringify(ScreenClass_1.default.screens));
         res.json({
             arrayNumber: ScreenClass_1.default.totalScreens,
-            test: ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens].test,
             message: ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens].id,
+            test: ScreenClass_1.default.screens[ScreenClass_1.default.totalScreens].test,
         });
         ScreenClass_1.default.totalScreens++;
     };
     ScreenController.prototype.initRoutes = function () {
         this.router.get('/', this.get);
-        this.router.put('/', this.newScreen);
+        this.router.post('/', this.newScreen);
     };
     return ScreenController;
 }());

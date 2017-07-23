@@ -5,14 +5,13 @@ export default class Screen {
     public mediaUrl: string;
     public mimeType: string;
     public text: string;
-    public friendlyname: string;
     public id: string = 'default';
-    public room: string;
+    public ip: string;
     public test: string = 'test';
 
-    constructor(public theName: string) {
-        // this.id = theName;
-        this.test = 'after constructor';
+    constructor(public screenId: any) {
+        console.log('id ' + screenId);
+        this.id = screenId;
         
     }
 }

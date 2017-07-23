@@ -16,7 +16,7 @@ var App = (function () {
             this.express.use(morgan('dev'));
         }
         this.express.use(bodyParser.json());
-        this.express.use(bodyParser.urlencoded({ extended: false }));
+        this.express.use(bodyParser.urlencoded({ extended: true }));
     };
     App.prototype.routes = function () {
         this.express.use('/', BaseController_1.default.router);

@@ -19,7 +19,8 @@ class App   {
             this.express.use(morgan('dev'));
         }
         this.express.use(bodyParser.json());
-        this.express.use(bodyParser.urlencoded({ extended: false }));
+        this.express.use(bodyParser.urlencoded({ extended: true }));
+        // this.express.use(require('connect').bodyParser());express.bodyParser()
     }
 
     private routes(): void   {
