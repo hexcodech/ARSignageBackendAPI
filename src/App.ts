@@ -20,7 +20,6 @@ class App   {
         }
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: true }));
-        // this.express.use(require('connect').bodyParser());express.bodyParser()
     }
 
     private routes(): void   {

@@ -9,45 +9,79 @@ export class ScreenController {
         this.initRoutes();
     }
 
-    private testMethod() {
-        // Screen.screens.findIndex( (i: Screen) => i.id === name);
-        console.log('test');
+    private getIndexFromId(searchId: string): number {
+        return Screen.screens.findIndex( (i: Screen) => i.displayId === searchId);
     }
 
-    private get(req: Request, res: Response)    {
-        // Return for example res.json(User.find(req.query.id));
-        this.testMethod();
-        res.json({
-            message: 'Screen',
-        });
+    private getScreen(req: Request, res: Response)    {
+        // get whole state
+
+        const displayIndex = this.getIndexFromId(req.params.id);
+        if (displayIndex !== -1) {
+                Screen.screens[displayIndex].timer.update();
+                res.send(Screen.screens[displayIndex]);
+            } else {
+                console.error('Screen ' + req.params.id + ' does not exist. It can not be returned.');
+            }
+        
     }
+
     private newScreen(req: Request, res: Response)    {
         // create new Screen Object
-        const newScreenName = req.body.id;
-        console.log(newScreenName);
+        const displayId = req.body.displayId;
+        const displayIp = req.ip;
+        const displayIndex = this.getIndexFromId(displayId);
 
-        Screen.screens[Screen.totalScreens] = new Screen(newScreenName);
-        
-        this.testMethod();
+        // Check whether a screen with the same Id is not already registered
+        if (displayIndex === - 1) {
+            // then register it
+            Screen.screens[Screen.totalScreens] = new Screen(displayId, displayIp);
+        } else {
+            console.log('Screen ' + displayId + ' does already exist.');
+            // just update it
+            // TODO update properties
+        }
 
-        // console.log(Screen.screens[Screen.totalScreens]);
-        
-        console.log(JSON.stringify(Screen.screens));
-
+        // console.log(Screen.screens);
+        // console.log(Screen.screens[Screen.totalScreens - 1].id);
+                
+        // Response
         res.json({
             arrayNumber: Screen.totalScreens,
-            message: Screen.screens[Screen.totalScreens].id,
-            test: Screen.screens[Screen.totalScreens].test,
+            id: Screen.screens[Screen.totalScreens - 1 ].displayId,
         });
-        Screen.totalScreens++;
+    }
+
+    private clearScreen(req: Request, res: Response) {
+        // clear all listed displays
+        const todo = req.body;
+        todo.forEach((element: any) => {
+            const displayIndex = this.getIndexFromId(element.displayId);
+            if (displayIndex !== -1) {
+                Screen.screens[displayIndex].clear();
+            } else {
+                console.error('Screen ' + element.displayId + ' does not exist. It can not be cleared.');
+            }
+        });
+
+        res.json({
+            test: 'test',
+        });
     }
 
     private initRoutes()    {
-        this.router.get('/', (req: Request, res: Response) => {
-            this.get(req, res);
+        this.router.get('/:id', (req: Request, res: Response) => {
+            console.log('\x1b[40m');
+            this.getScreen(req, res);
         });
-        this.router.post('/', this.newScreen);
-        // this.getIdFromName();
+        this.router.post('/', (req: Request, res: Response) => {
+            console.log('\x1b[40m');
+            this.newScreen(req, res);
+        });
+        this.router.put('/clear', (req: Request, res: Response) => {
+            console.log('\x1b[40m');
+            this.clearScreen(req, res);
+        });
     }
 }
 
