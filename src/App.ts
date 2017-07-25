@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as morgan from 'morgan';
 
 import BaseController from './controllers/BaseController';
-import ScreenController from './controllers/ScreenController';
+import DisplayController from './controllers/DisplayController';
 
 class App   {
     public express: express.Application;
@@ -24,7 +24,7 @@ class App   {
 
     private routes(): void   {
         this.express.use('/', BaseController.router);
-        this.express.use('/screen', ScreenController.router);
+        this.express.use('/display', DisplayController.router);
     }
 }
 

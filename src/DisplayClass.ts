@@ -1,6 +1,6 @@
-export default class Screen {
-    public static screens = new Array<Screen>();
-    public static totalScreens = 0;
+export default class Display {
+    public static displays = new Array<Display>();
+    public static totalDisplays = 0;
     
     public displayId: string = 'default';
     public ip: string;
@@ -30,9 +30,9 @@ export default class Screen {
     constructor(id: string, ip: string) {
         this.displayId = id;
         this.ip = ip;
-        console.log('New Screen with id ' + id + ' created.');
-        Screen.totalScreens = Screen.screens.length + 1;
-        console.log('There are now ' + Screen.totalScreens + ' Screens registered');
+        console.log('New Display with id ' + id + ' created.');
+        Display.totalDisplays = Display.displays.length + 1;
+        console.log('There are now ' + Display.totalDisplays + ' Displays registered');
         
     }
     
@@ -42,7 +42,7 @@ export default class Screen {
         this.media.type = null;
         this.media.url = null;
 
-        console.log('Screen ' + this.displayId + ' has been cleared.');
+        console.log('Display ' + this.displayId + ' has been cleared.');
     }
 
 }

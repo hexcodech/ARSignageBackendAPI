@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var express = require("express");
 var morgan = require("morgan");
 var BaseController_1 = require("./controllers/BaseController");
-var ScreenController_1 = require("./controllers/ScreenController");
+var DisplayController_1 = require("./controllers/DisplayController");
 var App = (function () {
     function App() {
         this.express = express();
@@ -20,7 +20,7 @@ var App = (function () {
     };
     App.prototype.routes = function () {
         this.express.use('/', BaseController_1.default.router);
-        this.express.use('/screen', ScreenController_1.default.router);
+        this.express.use('/display', DisplayController_1.default.router);
     };
     return App;
 }());

@@ -1,7 +1,7 @@
 import {Request, Response, Router} from 'express';
-import Screen from '../ScreenClass';
+import Display from '../DisplayClass';
 
-export class ScreenController {
+export class DisplayController {
     public router: Router;
 
     constructor()   {
@@ -10,57 +10,57 @@ export class ScreenController {
     }
 
     private getIndexFromId(searchId: string): number {
-        return Screen.screens.findIndex( (i: Screen) => i.displayId === searchId);
+        return Display.displays.findIndex( (i: Display) => i.displayId === searchId);
     }
 
-    private getScreen(req: Request, res: Response)    {
+    private getDisplay(req: Request, res: Response)    {
         // get whole state
 
         const displayIndex = this.getIndexFromId(req.params.id);
         if (displayIndex !== -1) {
-                Screen.screens[displayIndex].timer.update();
-                res.send(Screen.screens[displayIndex]);
+                Display.displays[displayIndex].timer.update();
+                res.send(Display.displays[displayIndex]);
             } else {
-                console.error('Screen ' + req.params.id + ' does not exist. It can not be returned.');
+                console.error('Display ' + req.params.id + ' does not exist. It can not be returned.');
             }
         
     }
 
-    private newScreen(req: Request, res: Response)    {
-        // create new Screen Object
+    private newDisplay(req: Request, res: Response)    {
+        // create new Display Object
         const displayId = req.body.displayId;
         const displayIp = req.ip;
         const displayIndex = this.getIndexFromId(displayId);
 
-        // Check whether a screen with the same Id is not already registered
+        // Check whether a display with the same Id is not already registered
         if (displayIndex === - 1) {
             // then register it
-            Screen.screens[Screen.totalScreens] = new Screen(displayId, displayIp);
+            Display.displays[Display.totalDisplays] = new Display(displayId, displayIp);
         } else {
-            console.log('Screen ' + displayId + ' does already exist.');
+            console.log('Display ' + displayId + ' does already exist.');
             // just update it
             // TODO update properties
         }
 
-        // console.log(Screen.screens);
-        // console.log(Screen.screens[Screen.totalScreens - 1].id);
+        // console.log(Display.displays);
+        // console.log(Display.displays[Display.totalDisplays - 1].id);
                 
         // Response
         res.json({
-            arrayNumber: Screen.totalScreens,
-            id: Screen.screens[Screen.totalScreens - 1 ].displayId,
+            arrayNumber: Display.totalDisplays,
+            id: Display.displays[Display.totalDisplays - 1 ].displayId,
         });
     }
 
-    private clearScreen(req: Request, res: Response) {
+    private clearDisplay(req: Request, res: Response) {
         // clear all listed displays
         const todo = req.body;
         todo.forEach((element: any) => {
             const displayIndex = this.getIndexFromId(element.displayId);
             if (displayIndex !== -1) {
-                Screen.screens[displayIndex].clear();
+                Display.displays[displayIndex].clear();
             } else {
-                console.error('Screen ' + element.displayId + ' does not exist. It can not be cleared.');
+                console.error('Display ' + element.displayId + ' does not exist. It can not be cleared.');
             }
         });
 
@@ -72,17 +72,17 @@ export class ScreenController {
     private initRoutes()    {
         this.router.get('/:id', (req: Request, res: Response) => {
             console.log('\x1b[40m');
-            this.getScreen(req, res);
+            this.getDisplay(req, res);
         });
         this.router.post('/', (req: Request, res: Response) => {
             console.log('\x1b[40m');
-            this.newScreen(req, res);
+            this.newDisplay(req, res);
         });
         this.router.put('/clear', (req: Request, res: Response) => {
             console.log('\x1b[40m');
-            this.clearScreen(req, res);
+            this.clearDisplay(req, res);
         });
     }
 }
 
-export default new ScreenController();
+export default new DisplayController();
