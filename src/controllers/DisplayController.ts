@@ -71,15 +71,12 @@ export class DisplayController {
 
     private initRoutes()    {
         this.router.get('/:id', (req: Request, res: Response) => {
-            console.log('\x1b[40m');
             this.getDisplay(req, res);
         });
         this.router.post('/', (req: Request, res: Response) => {
-            console.log('\x1b[40m');
             this.newDisplay(req, res);
         });
         this.router.put('/clear', (req: Request, res: Response) => {
-            console.log('\x1b[40m');
             this.clearDisplay(req, res);
         });
     }

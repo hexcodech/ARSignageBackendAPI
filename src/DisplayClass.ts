@@ -1,7 +1,40 @@
 export default class Display {
     public static displays = new Array<Display>();
     public static totalDisplays = 0;
+
+    public static config: any;
+
+    public static importConfig() {
+        //
+        const fs = require('fs');
+        fs.readFile('config.json', 'utf8', (err: any, data: string) => {
+            if (err) {
+                return console.log(err);
+            }
+            // console.log(data);
+            Display.config = JSON.parse(data);
+            // console.log(Display.config[1]);
+            Display.findDisplayInConfig('ar1-foyer');
+        });
+    }
     
+    public static findDisplayInConfig(DisplayId: string) {
+        for (const room in Display.config) {
+            if (Display.config.hasOwnProperty(room)) {
+                for (let i = 0; i <= Display.config[room].screens.length; i++) {
+                    // Display.config[room].screens[i].displayId === DisplayId
+                    console.log(room + ', ' + i);
+                    if (Display.config[room].screens[i].displayId === DisplayId) {
+                        return {
+                            displayId: i,
+                            roomId: room,
+                        };
+                    }
+                }
+            }
+        }
+    }
+
     public displayId: string = 'default';
     public ip: string;
     

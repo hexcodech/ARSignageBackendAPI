@@ -54,15 +54,12 @@ var DisplayController = (function () {
     DisplayController.prototype.initRoutes = function () {
         var _this = this;
         this.router.get('/:id', function (req, res) {
-            console.log('\x1b[40m');
             _this.getDisplay(req, res);
         });
         this.router.post('/', function (req, res) {
-            console.log('\x1b[40m');
             _this.newDisplay(req, res);
         });
         this.router.put('/clear', function (req, res) {
-            console.log('\x1b[40m');
             _this.clearDisplay(req, res);
         });
     };
