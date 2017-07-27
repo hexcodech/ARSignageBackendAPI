@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
+var DataClass_1 = require("../DataClass");
 var DisplayClass_1 = require("../DisplayClass");
 var DisplayController = (function () {
     function DisplayController() {
@@ -20,20 +21,12 @@ var DisplayController = (function () {
             console.error('Display ' + req.params.id + ' does not exist. It can not be returned.');
         }
     };
+    DisplayController.prototype.addDisplay = function (displayId, displayIp) {
+        var configIndex = DataClass_1.default.findDisplayInConfig(displayId);
+        DataClass_1.default.data[configIndex.roomIndex].displays[configIndex.displayIndex].active = true;
+    };
     DisplayController.prototype.newDisplay = function (req, res) {
-        var displayId = req.body.displayId;
-        var displayIp = req.ip;
-        var displayIndex = this.getIndexFromId(displayId);
-        if (displayIndex === -1) {
-            DisplayClass_1.default.displays[DisplayClass_1.default.totalDisplays] = new DisplayClass_1.default(displayId, displayIp);
-        }
-        else {
-            console.log('Display ' + displayId + ' does already exist.');
-        }
-        res.json({
-            arrayNumber: DisplayClass_1.default.totalDisplays,
-            id: DisplayClass_1.default.displays[DisplayClass_1.default.totalDisplays - 1].displayId,
-        });
+        this.addDisplay(req.body.displayId, req.ip);
     };
     DisplayController.prototype.clearDisplay = function (req, res) {
         var _this = this;

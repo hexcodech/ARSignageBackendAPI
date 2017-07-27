@@ -1,5 +1,7 @@
 import {Request, Response, Router} from 'express';
+import Data from '../DataClass';
 import Display from '../DisplayClass';
+import Room from '../RoomClass';
 
 export class DisplayController {
     public router: Router;
@@ -25,8 +27,20 @@ export class DisplayController {
             }
         
     }
+    
+    private addDisplay(displayId: string, displayIp: string) {
+        //
+        const configIndex = Data.findDisplayInConfig(displayId);
+        Data.data[configIndex.roomIndex].displays[configIndex.displayIndex].active = true;
+        
 
-    private newDisplay(req: Request, res: Response)    {
+    }
+
+    private newDisplay(req: Request, res: Response) {
+        
+        this.addDisplay(req.body.displayId, req.ip);
+        
+        /*
         // create new Display Object
         const displayId = req.body.displayId;
         const displayIp = req.ip;
@@ -50,6 +64,8 @@ export class DisplayController {
             arrayNumber: Display.totalDisplays,
             id: Display.displays[Display.totalDisplays - 1 ].displayId,
         });
+        */
+
     }
 
     private clearDisplay(req: Request, res: Response) {

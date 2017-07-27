@@ -1,11 +1,12 @@
 import App from './App';
-import Config from './ConfigClass';
+
+import Data from './DataClass';
 
 const port = normalizePort(process.env.PORT || 4100);
 const server = App.listen(port, () => {
     console.log('\x1b[40m' + `Express listening on port ${port}`);
-    Config.importConfig();
-    // Display.findDisplayInConfig('ar1-foyer');
+    Data.importConfig();
+    
 });
 
 function normalizePort(val: number|string): number|string|boolean    {

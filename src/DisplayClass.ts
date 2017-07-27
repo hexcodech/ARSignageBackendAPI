@@ -4,10 +4,10 @@ export default class Display {
 
     // ---------------------------- END OF STATIC DEFINITIONS --------------------------------------
 
-    public displayId: string = 'default';
+    public displayId: string;
+    public friendlyName: string;
     public ip: string;
-    
-    public test: string = 'test';
+    public active: boolean = false;
     
     public timer = {
         endTime: null as number,

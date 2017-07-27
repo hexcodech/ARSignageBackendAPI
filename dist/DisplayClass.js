@@ -3,8 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Display = (function () {
     function Display(id, ip) {
         var _this = this;
-        this.displayId = 'default';
-        this.test = 'test';
+        this.active = false;
         this.timer = {
             endTime: null,
             running: null,

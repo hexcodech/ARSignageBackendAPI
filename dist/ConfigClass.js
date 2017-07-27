@@ -11,18 +11,18 @@ var Config = (function () {
             }
             Config.config = JSON.parse(data);
             console.log(Config.config);
-            Config.findDisplayInConfig('ar2-room2');
+            console.log(Config.config[0].displays[0].friendlyName);
         });
     };
     Config.findDisplayInConfig = function (DisplayId) {
         for (var room in Config.config) {
             if (Config.config.hasOwnProperty(room)) {
-                for (var i = 0; i < Config.config[room].screens.length; i++) {
-                    if (Config.config[room].screens[i].displayId === DisplayId) {
+                for (var i = 0; i < Config.config[room].displays.length; i++) {
+                    if (Config.config[room].displays[i].displayId === DisplayId) {
                         console.log('Found Room in ' + room + ', ' + i);
                         return {
-                            displayId: i,
-                            roomId: room,
+                            displayIndex: i,
+                            roomIndex: room,
                         };
                     }
                 }
