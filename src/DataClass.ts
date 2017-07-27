@@ -14,7 +14,7 @@ export default class Data {
 
             Data.data = JSON.parse(data);
 
-            // console.log(Data.config);
+            console.log(Data.data);
             // console.log(Data.config[0].displays[0].displayId);
             // Data.findDisplayInConfig('ar2-room2');
         });
@@ -29,9 +29,12 @@ export default class Data {
                         displayIndex: display,
                         roomIndex: room,
                     };
-                    
                 }
             }
         }
+        return {
+            displayIndex: -1,
+            roomIndex: -1,
+        };
     }
 }

@@ -10,7 +10,7 @@ var Data = (function () {
                 return console.log(err);
             }
             Data.data = JSON.parse(data);
-            Data.findDisplayInConfig('ar2-room2');
+            console.log(Data.data);
         });
     };
     Data.findDisplayInConfig = function (DisplayId) {
@@ -25,6 +25,10 @@ var Data = (function () {
                 }
             }
         }
+        return {
+            displayIndex: -1,
+            roomIndex: -1,
+        };
     };
     return Data;
 }());

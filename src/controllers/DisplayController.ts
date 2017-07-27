@@ -18,21 +18,26 @@ export class DisplayController {
     private getDisplay(req: Request, res: Response)    {
         // get whole state
 
-        const displayIndex = this.getIndexFromId(req.params.id);
-        if (displayIndex !== -1) {
-                Display.displays[displayIndex].timer.update();
-                res.send(Display.displays[displayIndex]);
+        const dataIndex = Data.findDisplayInConfig(req.params.id);
+        if (dataIndex.displayIndex !== -1) {
+                // TODO fix
+                // Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].timer.update();
+                res.send(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
             } else {
                 console.error('Display ' + req.params.id + ' does not exist. It can not be returned.');
+                res.json({
+                    works: 'nope',
+                });
             }
         
     }
     
     private addDisplay(displayId: string, displayIp: string) {
         //
-        const configIndex = Data.findDisplayInConfig(displayId);
-        Data.data[configIndex.roomIndex].displays[configIndex.displayIndex].active = true;
-        
+        const dataIndex = Data.findDisplayInConfig(displayId);
+        Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].active = true;
+        Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].displayId = displayId;
+        Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].ip = displayIp;
 
     }
 
@@ -40,31 +45,9 @@ export class DisplayController {
         
         this.addDisplay(req.body.displayId, req.ip);
         
-        /*
-        // create new Display Object
-        const displayId = req.body.displayId;
-        const displayIp = req.ip;
-        const displayIndex = this.getIndexFromId(displayId);
-
-        // Check whether a display with the same Id is not already registered
-        if (displayIndex === - 1) {
-            // then register it
-            Display.displays[Display.totalDisplays] = new Display(displayId, displayIp);
-        } else {
-            console.log('Display ' + displayId + ' does already exist.');
-            // just update it
-            // TODO update properties
-        }
-
-        // console.log(Display.displays);
-        // console.log(Display.displays[Display.totalDisplays - 1].id);
-                
-        // Response
         res.json({
-            arrayNumber: Display.totalDisplays,
-            id: Display.displays[Display.totalDisplays - 1 ].displayId,
+            id: 'works',
         });
-        */
 
     }
 

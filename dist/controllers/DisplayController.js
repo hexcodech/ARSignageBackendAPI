@@ -12,21 +12,28 @@ var DisplayController = (function () {
         return DisplayClass_1.default.displays.findIndex(function (i) { return i.displayId === searchId; });
     };
     DisplayController.prototype.getDisplay = function (req, res) {
-        var displayIndex = this.getIndexFromId(req.params.id);
-        if (displayIndex !== -1) {
-            DisplayClass_1.default.displays[displayIndex].timer.update();
-            res.send(DisplayClass_1.default.displays[displayIndex]);
+        var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
+        if (dataIndex.displayIndex !== -1) {
+            res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
         }
         else {
             console.error('Display ' + req.params.id + ' does not exist. It can not be returned.');
+            res.json({
+                works: 'nope',
+            });
         }
     };
     DisplayController.prototype.addDisplay = function (displayId, displayIp) {
-        var configIndex = DataClass_1.default.findDisplayInConfig(displayId);
-        DataClass_1.default.data[configIndex.roomIndex].displays[configIndex.displayIndex].active = true;
+        var dataIndex = DataClass_1.default.findDisplayInConfig(displayId);
+        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].active = true;
+        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].displayId = displayId;
+        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].ip = displayIp;
     };
     DisplayController.prototype.newDisplay = function (req, res) {
         this.addDisplay(req.body.displayId, req.ip);
+        res.json({
+            id: 'works',
+        });
     };
     DisplayController.prototype.clearDisplay = function (req, res) {
         var _this = this;
