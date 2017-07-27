@@ -1,10 +1,10 @@
 import App from './App';
-import Display from './DisplayClass';
+import Config from './ConfigClass';
 
 const port = normalizePort(process.env.PORT || 4100);
 const server = App.listen(port, () => {
     console.log('\x1b[40m' + `Express listening on port ${port}`);
-    Display.importConfig();
+    Config.importConfig();
     // Display.findDisplayInConfig('ar1-foyer');
 });
 

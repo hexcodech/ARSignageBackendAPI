@@ -30,30 +30,6 @@ var Display = (function () {
         Display.totalDisplays = Display.displays.length + 1;
         console.log('There are now ' + Display.totalDisplays + ' Displays registered');
     }
-    Display.importConfig = function () {
-        var fs = require('fs');
-        fs.readFile('config.json', 'utf8', function (err, data) {
-            if (err) {
-                return console.log(err);
-            }
-            Display.config = JSON.parse(data);
-            Display.findDisplayInConfig('ar1-foyer');
-        });
-    };
-    Display.findDisplayInConfig = function (DisplayId) {
-        for (var room in Display.config) {
-            if (Display.config.hasOwnProperty(room)) {
-                for (var i = 0; i <= Display.config[room].screens.length; i++) {
-                    console.log(room + ', ' + i);
-                    if (Display.config[room].screens[i].displayId === DisplayId) {
-                        return  = {
-                            roomId: roomId,
-                        };
-                    }
-                }
-            }
-        }
-    };
     Display.prototype.clear = function () {
         this.media.headerVisible = null;
         this.media.text = null;

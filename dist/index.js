@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var App_1 = require("./App");
-var DisplayClass_1 = require("./DisplayClass");
+var ConfigClass_1 = require("./ConfigClass");
 var port = normalizePort(process.env.PORT || 4100);
 var server = App_1.default.listen(port, function () {
     console.log('\x1b[40m' + ("Express listening on port " + port));
-    DisplayClass_1.default.importConfig();
+    ConfigClass_1.default.importConfig();
 });
 function normalizePort(val) {
     var portValue = (typeof val === 'string') ? parseInt(val, 10) : val;
