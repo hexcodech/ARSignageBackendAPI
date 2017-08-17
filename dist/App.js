@@ -3,8 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bodyParser = require("body-parser");
 var express = require("express");
 var morgan = require("morgan");
+require("es6-shim");
+require("reflect-metadata");
 var BaseController_1 = require("./controllers/BaseController");
 var DisplayController_1 = require("./controllers/DisplayController");
+var MediaController_1 = require("./controllers/MediaController");
+var StaticController_1 = require("./controllers/StaticController");
 var App = (function () {
     function App() {
         this.express = express();
@@ -15,12 +19,16 @@ var App = (function () {
         if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'testing') {
             this.express.use(morgan('dev'));
         }
+        this.express.use('/frontend', express.static(__dirname + '/../frontend'));
+        this.express.use('/static', express.static(__dirname + '/../media'));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: true }));
     };
     App.prototype.routes = function () {
         this.express.use('/', BaseController_1.default.router);
         this.express.use('/display', DisplayController_1.default.router);
+        this.express.use('/frontend', StaticController_1.default.router);
+        this.express.use('/media', MediaController_1.default.router);
     };
     return App;
 }());

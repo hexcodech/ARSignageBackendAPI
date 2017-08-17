@@ -2,18 +2,35 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var DataClass_1 = require("../DataClass");
-var DisplayClass_1 = require("../DisplayClass");
 var DisplayController = (function () {
     function DisplayController() {
         this.router = express_1.Router();
         this.initRoutes();
     }
-    DisplayController.prototype.getIndexFromId = function (searchId) {
-        return DisplayClass_1.default.displays.findIndex(function (i) { return i.displayId === searchId; });
+    DisplayController.prototype.addDisplay = function (displayId, socketId) {
+        var dataIndex = DataClass_1.default.findDisplayInConfig(displayId);
+        if (dataIndex.displayIndex !== -1) {
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].active = true;
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].socketId = socketId;
+        }
+        else {
+            console.error('Display ' + displayId + ' can not be added because it is not present in config');
+        }
+    };
+    DisplayController.prototype.removeDisplay = function (displayId) {
+        var dataIndex = DataClass_1.default.findDisplayInConfig(displayId);
+        if (dataIndex.displayIndex !== -1) {
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].active = false;
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].socketId = null;
+        }
+        else {
+            console.error('Display ' + displayId + ' can not be removed because it is not present in config');
+        }
     };
     DisplayController.prototype.getDisplay = function (req, res) {
         var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
         if (dataIndex.displayIndex !== -1) {
+            DataClass_1.default.data[dataIndex.roomIndex].timer.update();
             res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
         }
         else {
@@ -23,11 +40,8 @@ var DisplayController = (function () {
             });
         }
     };
-    DisplayController.prototype.addDisplay = function (displayId, displayIp) {
-        var dataIndex = DataClass_1.default.findDisplayInConfig(displayId);
-        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].active = true;
-        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].displayId = displayId;
-        DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].ip = displayIp;
+    DisplayController.prototype.getDisplays = function (req, res) {
+        res.send(DataClass_1.default.data);
     };
     DisplayController.prototype.newDisplay = function (req, res) {
         this.addDisplay(req.body.displayId, req.ip);
@@ -35,20 +49,43 @@ var DisplayController = (function () {
             id: 'works',
         });
     };
+    DisplayController.prototype.updateDisplay = function (req, res) {
+        var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
+        this.updateDisplayState(dataIndex, req.body);
+        res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
+    };
+    DisplayController.prototype.updateDisplayState = function (dataIndex, displayObject) {
+        for (var key in displayObject) {
+            if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
+                if (key === 'media') {
+                    for (var subkey in displayObject[key]) {
+                        if (displayObject[key].hasOwnProperty(subkey) && displayObject[key][subkey] !== null) {
+                            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key][subkey] = displayObject[key][subkey];
+                        }
+                    }
+                }
+                else if (key === 'displayId' || key === 'friendlyName' || key === 'timer') {
+                }
+                else {
+                    DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key] = displayObject[key];
+                }
+            }
+        }
+        DataClass_1.default.data[dataIndex.roomIndex].timer.update();
+    };
     DisplayController.prototype.clearDisplay = function (req, res) {
-        var _this = this;
         var todo = req.body;
         todo.forEach(function (element) {
-            var displayIndex = _this.getIndexFromId(element.displayId);
-            if (displayIndex !== -1) {
-                DisplayClass_1.default.displays[displayIndex].clear();
+            var dataIndex = DataClass_1.default.findDisplayInConfig(element.displayId);
+            if (dataIndex.displayIndex !== -1) {
+                DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].clear();
             }
             else {
                 console.error('Display ' + element.displayId + ' does not exist. It can not be cleared.');
             }
         });
         res.json({
-            test: 'test',
+            success: 'true',
         });
     };
     DisplayController.prototype.initRoutes = function () {
@@ -56,11 +93,20 @@ var DisplayController = (function () {
         this.router.get('/:id', function (req, res) {
             _this.getDisplay(req, res);
         });
+        this.router.get('/', function (req, res) {
+            _this.getDisplays(req, res);
+        });
         this.router.post('/', function (req, res) {
             _this.newDisplay(req, res);
         });
         this.router.put('/clear', function (req, res) {
             _this.clearDisplay(req, res);
+        });
+        this.router.put('/:id', function (req, res) {
+            _this.updateDisplay(req, res);
+        });
+        this.router.put('/', function (req, res) {
+            _this.updateDisplay(req, res);
         });
     };
     return DisplayController;

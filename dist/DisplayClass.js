@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var DataClass_1 = require("./DataClass");
 var Display = (function () {
-    function Display(id, ip) {
+    function Display(displayId, friendlyName) {
         var _this = this;
         this.active = false;
         this.timer = {
@@ -9,12 +10,8 @@ var Display = (function () {
             running: null,
             seconds: null,
             update: function () {
-                if (_this.timer.endTime !== null) {
-                    _this.timer.seconds = _this.timer.endTime - Math.floor(Date.now() / 1000);
-                }
-                else {
-                    _this.timer.seconds = 0;
-                }
+                console.log('timer update in Display not allowed');
+                DataClass_1.default.data[DataClass_1.default.findDisplayInConfig(_this.displayId).roomIndex].timer.update();
             },
         };
         this.media = {
@@ -23,11 +20,9 @@ var Display = (function () {
             type: null,
             url: null,
         };
-        this.displayId = id;
-        this.ip = ip;
-        console.log('New Display with id ' + id + ' created.');
-        Display.totalDisplays = Display.displays.length + 1;
-        console.log('There are now ' + Display.totalDisplays + ' Displays registered');
+        this.displayId = displayId;
+        this.friendlyName = friendlyName;
+        console.log('New Display with id ' + displayId + ' created.');
     }
     Display.prototype.clear = function () {
         this.media.headerVisible = null;
@@ -36,8 +31,6 @@ var Display = (function () {
         this.media.url = null;
         console.log('Display ' + this.displayId + ' has been cleared.');
     };
-    Display.displays = new Array();
-    Display.totalDisplays = 0;
     return Display;
 }());
 exports.default = Display;

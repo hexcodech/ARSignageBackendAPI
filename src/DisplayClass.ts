@@ -1,12 +1,14 @@
+import Data from './DataClass';
+
 export default class Display {
-    public static displays = new Array<Display>();
-    public static totalDisplays = 0;
+    // public static displays = new Array<Display>();
 
     // ---------------------------- END OF STATIC DEFINITIONS --------------------------------------
 
     public displayId: string;
     public friendlyName: string;
     public ip: string;
+    public socketId: string;
     public active: boolean = false;
     
     public timer = {
@@ -14,11 +16,8 @@ export default class Display {
         running: null as boolean,
         seconds: null as number,
         update: () => {
-            if (this.timer.endTime !== null) {
-                this.timer.seconds = this.timer.endTime - Math.floor(Date.now() / 1000);
-            } else {
-                this.timer.seconds = 0;
-            }
+            console.log('timer update in Display not allowed');
+            Data.data[Data.findDisplayInConfig(this.displayId).roomIndex].timer.update();
         },
     };
 
@@ -29,13 +28,10 @@ export default class Display {
         url: null as string,
     };
 
-    constructor(id: string, ip: string) {
-        this.displayId = id;
-        this.ip = ip;
-        console.log('New Display with id ' + id + ' created.');
-        Display.totalDisplays = Display.displays.length + 1;
-        console.log('There are now ' + Display.totalDisplays + ' Displays registered');
-        
+    constructor(displayId: string, friendlyName: string) {
+        this.displayId = displayId;
+        this.friendlyName = friendlyName;
+        console.log('New Display with id ' + displayId + ' created.');  
     }
     
     public clear() {
@@ -43,8 +39,8 @@ export default class Display {
         this.media.text = null;
         this.media.type = null;
         this.media.url = null;
-
+        
         console.log('Display ' + this.displayId + ' has been cleared.');
     }
-
+    
 }
