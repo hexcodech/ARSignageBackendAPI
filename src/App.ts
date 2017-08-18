@@ -25,8 +25,9 @@ class App   {
         if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'testing') {
             this.express.use(morgan('dev'));
         }
-        this.express.use('/frontend', express.static(__dirname + '/../frontend'));
+        // this.express.use('/frontend', express.static(__dirname + '/../frontend'));
         this.express.use('/static', express.static(__dirname + '/../media'));
+        this.express.use('/dashboard', express.static(__dirname + '/../dashboard'));
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: true }));
         
