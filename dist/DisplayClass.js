@@ -8,7 +8,7 @@ var Display = (function () {
         this.timer = {
             endTime: null,
             running: null,
-            seconds: null,
+            seconds: 0,
             update: function () {
                 console.log('timer update in Display not allowed');
                 DataClass_1.default.data[DataClass_1.default.findDisplayInConfig(_this.displayId).roomIndex].timer.update();
@@ -16,6 +16,7 @@ var Display = (function () {
         };
         this.media = {
             headerVisible: true,
+            remaining: null,
             text: null,
             type: null,
             url: null,

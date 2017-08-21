@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import * as mime from 'mime-types';
+import Data from '../DataClass';
 
 export class MediaController {
     public router: Router;
@@ -32,8 +33,9 @@ export class MediaController {
         folderlist.forEach((folder) => {
             const files = fs.readdirSync(__dirname + dir + '/' + folder);
             files.forEach((file: any) => {
-                filelist.push({name : file, room: folder, 
-                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file)});
+                filelist.push({name : file, roomId: folder, 
+                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
+                     url: encodeURI('http://' + Data.myIp + ':80/static/' + folder + '/' + file)});
             });
         });
         res.send(filelist);

@@ -28,6 +28,7 @@ var DisplayController = (function () {
         }
     };
     DisplayController.prototype.getDisplay = function (req, res) {
+        console.log('get one Display');
         var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
         if (dataIndex.displayIndex !== -1) {
             DataClass_1.default.data[dataIndex.roomIndex].timer.update();
@@ -41,6 +42,7 @@ var DisplayController = (function () {
         }
     };
     DisplayController.prototype.getDisplays = function (req, res) {
+        console.log('get all displays');
         res.send(DataClass_1.default.data);
     };
     DisplayController.prototype.newDisplay = function (req, res) {
@@ -51,10 +53,11 @@ var DisplayController = (function () {
     };
     DisplayController.prototype.updateDisplay = function (req, res) {
         var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
-        this.updateDisplayState(dataIndex, req.body);
+        this.updateDisplayState(dataIndex, req.body.display);
         res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
     };
     DisplayController.prototype.updateDisplayState = function (dataIndex, displayObject) {
+        console.log('try to update display: ' + displayObject.displayId);
         for (var key in displayObject) {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {
@@ -64,7 +67,8 @@ var DisplayController = (function () {
                         }
                     }
                 }
-                else if (key === 'displayId' || key === 'friendlyName' || key === 'timer') {
+                else if (key === 'displayId' || key === 'friendlyName' || key === 'timer' || key === 'target'
+                    || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate') {
                 }
                 else {
                     DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key] = displayObject[key];
@@ -74,19 +78,18 @@ var DisplayController = (function () {
         DataClass_1.default.data[dataIndex.roomIndex].timer.update();
     };
     DisplayController.prototype.clearDisplay = function (req, res) {
-        var todo = req.body;
+        var todo = req.body.displayIds;
+        console.log(req.body);
         todo.forEach(function (element) {
-            var dataIndex = DataClass_1.default.findDisplayInConfig(element.displayId);
+            var dataIndex = DataClass_1.default.findDisplayInConfig(element);
             if (dataIndex.displayIndex !== -1) {
                 DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].clear();
             }
             else {
-                console.error('Display ' + element.displayId + ' does not exist. It can not be cleared.');
+                console.error('Display ' + element + ' does not exist. It can not be cleared.');
             }
         });
-        res.json({
-            success: 'true',
-        });
+        res.send(DataClass_1.default.data);
     };
     DisplayController.prototype.initRoutes = function () {
         var _this = this;

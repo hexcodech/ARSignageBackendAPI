@@ -9,16 +9,14 @@ var Room = (function () {
         this.displays = new Array();
         this.timer = {
             endTime: null,
-            running: null,
-            seconds: null,
+            running: false,
+            seconds: 0,
             update: function () {
-                if (_this.timer.endTime !== null && _this.timer.endTime - Math.floor(Date.now() / 1000) >= 0) {
+                if (_this.timer.running &&
+                    _this.timer.endTime !== null && _this.timer.endTime - Math.floor(Date.now() / 1000) >= 0) {
                     _this.timer.seconds = _this.timer.endTime - Math.floor(Date.now() / 1000);
                 }
-                else {
-                    _this.timer.seconds = null;
-                    _this.timer.running = false;
-                    _this.timer.endTime = null;
+                else if (_this.timer.seconds === 0) {
                 }
                 _this.displays.forEach(function (display) {
                     display.timer.endTime = _this.timer.endTime;

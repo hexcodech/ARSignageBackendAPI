@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var mime = require("mime-types");
+var DataClass_1 = require("../DataClass");
 var MediaController = (function () {
     function MediaController() {
         this.router = express_1.Router();
@@ -26,8 +27,9 @@ var MediaController = (function () {
         folderlist.forEach(function (folder) {
             var files = fs.readdirSync(__dirname + dir + '/' + folder);
             files.forEach(function (file) {
-                filelist.push({ name: file, room: folder,
-                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file) });
+                filelist.push({ name: file, roomId: folder,
+                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
+                    url: encodeURI('http://' + DataClass_1.default.myIp + ':80/static/' + folder + '/' + file) });
             });
         });
         res.send(filelist);

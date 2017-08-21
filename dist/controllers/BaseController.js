@@ -13,20 +13,22 @@ var BaseController = (function () {
         });
     };
     BaseController.prototype.setTimer = function (req, res) {
+        console.log('body');
+        console.log(req.body);
+        var timer = req.body.timer;
+        var roomIndex = DataClass_1.default.findRoomInConfig(req.body.timer.roomId);
+        if (typeof req.body.timer.running !== undefined) {
+            DataClass_1.default.data[roomIndex].timer.running = req.body.timer.running;
+            if (DataClass_1.default.data[roomIndex].timer.seconds) {
+                DataClass_1.default.data[roomIndex].timer.endTime = DataClass_1.default.data[roomIndex].timer.seconds + Math.floor(Date.now() / 1000);
+            }
+        }
+        if (req.body.timer.seconds) {
+            DataClass_1.default.data[roomIndex].timer.seconds = req.body.timer.seconds;
+        }
+        DataClass_1.default.data[roomIndex].timer.update();
         var todo = req.body.rooms;
         var time = req.body.time;
-        todo.forEach(function (element) {
-            var roomIndex = DataClass_1.default.findRoomInConfig(element.roomId);
-            if (roomIndex !== -1 && DataClass_1.default.data[roomIndex].hasOwnProperty('timer')) {
-                var endTime = Math.floor(Date.now() / 1000) + time;
-                DataClass_1.default.data[roomIndex].timer.endTime = endTime;
-                DataClass_1.default.data[roomIndex].timer.running = true;
-                DataClass_1.default.data[roomIndex].timer.update();
-            }
-            else {
-                console.error('Room ' + element.roomId + ' does not exit. Timer can not be set.');
-            }
-        });
         res.send(DataClass_1.default.data);
     };
     BaseController.prototype.initRoutes = function () {

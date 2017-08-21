@@ -11,7 +11,7 @@ var StaticController = (function () {
         res.sendFile('index.html', { root: __dirname + '/../../frontend/' });
     };
     StaticController.prototype.initRoutes = function () {
-        this.router.get('/:displayId', this.getFrontend);
+        this.router.get('/:displayId/', express.static(__dirname + '/../frontend'));
     };
     return StaticController;
 }());

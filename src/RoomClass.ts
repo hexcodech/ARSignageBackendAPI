@@ -18,16 +18,17 @@ export default class Room {
 
     public timer = {
         endTime: null as number,
-        running: null as boolean,
-        seconds: null as number,
+        running: false as boolean,
+        seconds: 0 as number,
         update: () => {
             
-            if (this.timer.endTime !== null && this.timer.endTime - Math.floor(Date.now() / 1000) >= 0) {
+            if (this.timer.running && 
+   this.timer.endTime !== null && this.timer.endTime - Math.floor(Date.now() / 1000) >= 0) {
                 this.timer.seconds = this.timer.endTime - Math.floor(Date.now() / 1000);
-            } else {
-                this.timer.seconds = null;
-                this.timer.running = false;
-                this.timer.endTime = null;
+            } else  if (this.timer.seconds === 0) {
+
+                // this.timer.running = false;
+                // this.timer.endTime = null;
             }
             this.displays.forEach((display: Display) => {
                 display.timer.endTime = this.timer.endTime;

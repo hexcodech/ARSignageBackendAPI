@@ -35,6 +35,23 @@ var Data = (function () {
             roomIndex: -1,
         };
     };
+    Data.findSocketIdInConfig = function (socketId) {
+        for (var room = 0; room < Data.data.length; room++) {
+            for (var display = 0; display < Data.data[room].displays.length; display++) {
+                if (Data.data[room].displays[display].socketId === socketId) {
+                    console.log('Found Socket in ' + room + ', ' + display);
+                    return {
+                        displayIndex: display,
+                        roomIndex: room,
+                    };
+                }
+            }
+        }
+        return {
+            displayIndex: -1,
+            roomIndex: -1,
+        };
+    };
     Data.findRoomInConfig = function (RoomId) {
         for (var room = 0; room < Data.data.length; room++) {
             if (Data.data[room].roomId === RoomId) {
@@ -44,11 +61,33 @@ var Data = (function () {
         }
         return -1;
     };
+    Data.getmyIP = function () {
+        var os = require('os');
+        var ifaces = os.networkInterfaces();
+        Object.keys(ifaces).forEach(function (ifname) {
+            var alias = 0;
+            ifaces[ifname].forEach(function (iface) {
+                if ('IPv4' !== iface.family || iface.internal !== false) {
+                    return;
+                }
+                if (alias >= 1) {
+                    console.error('there are mutliple netzwork adapters');
+                    console.log(ifname + ':' + alias, iface.address);
+                }
+                else {
+                    console.log(ifname, iface.address);
+                    Data.myIp = iface.address;
+                }
+                ++alias;
+            });
+        });
+    };
     Data.initializeData = function (jsonData) {
         for (var _i = 0, jsonData_1 = jsonData; _i < jsonData_1.length; _i++) {
             var room = jsonData_1[_i];
             Data.data.push(new RoomClass_1.default(room.roomId, room.friendlyName, room.displays));
         }
+        Data.getmyIP();
     };
     Data.data = new Array();
     return Data;

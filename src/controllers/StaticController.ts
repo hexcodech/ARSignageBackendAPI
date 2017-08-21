@@ -14,7 +14,7 @@ export class StaticController {
     }
 
     private initRoutes()    {
-        this.router.get('/:displayId', this.getFrontend);
+        this.router.get('/:displayId/', express.static(__dirname + '/../frontend'));
     }
 
 }

@@ -14,7 +14,7 @@ export default class Display {
     public timer = {
         endTime: null as number,
         running: null as boolean,
-        seconds: null as number,
+        seconds: 0 as number,
         update: () => {
             console.log('timer update in Display not allowed');
             Data.data[Data.findDisplayInConfig(this.displayId).roomIndex].timer.update();
@@ -23,6 +23,7 @@ export default class Display {
 
     public media = {
         headerVisible: true,
+        remaining: null as number,
         text: null as string,
         type: null as string,
         url: null as string,

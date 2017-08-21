@@ -17,23 +17,28 @@ export class BaseController {
 
     private setTimer(req: Request, res: Response) {
         // set the timer for multiple rooms
+        console.log('body');
+        console.log(req.body);
+        
+        const timer = req.body.timer;
+        
+        const roomIndex = Data.findRoomInConfig(req.body.timer.roomId);
+        
+        if (typeof req.body.timer.running !== undefined) {
+            
+            Data.data[roomIndex].timer.running = req.body.timer.running;
+            if (Data.data[roomIndex].timer.seconds) {
+                Data.data[roomIndex].timer.endTime = Data.data[roomIndex].timer.seconds + Math.floor(Date.now() / 1000);
+            }
+        }
+        if (req.body.timer.seconds) {
+            Data.data[roomIndex].timer.seconds = req.body.timer.seconds;
+        }
+
+        Data.data[roomIndex].timer.update();
         const todo = req.body.rooms;
         const time = req.body.time;
-
-        todo.forEach((element: any) => {
-            
-            const roomIndex = Data.findRoomInConfig(element.roomId);
-            if (roomIndex !== -1 && Data.data[roomIndex].hasOwnProperty('timer')) {
-                const endTime = Math.floor(Date.now() / 1000) + time;
-                Data.data[roomIndex].timer.endTime = endTime;
-                Data.data[roomIndex].timer.running = true;
-                Data.data[roomIndex].timer.update();
-            } else {
-                console.error('Room ' + element.roomId + ' does not exit. Timer can not be set.');
-            }
-
-        });
-
+        
         res.send(Data.data);
     }
 

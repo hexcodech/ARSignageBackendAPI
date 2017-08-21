@@ -35,7 +35,7 @@ export class DisplayController {
 
     private getDisplay(req: Request, res: Response)    {
         // get whole state
-
+        console.log('get one Display');
         const dataIndex = Data.findDisplayInConfig(req.params.id);
         if (dataIndex.displayIndex !== -1) {
                 // TODO fix
@@ -51,6 +51,7 @@ export class DisplayController {
     }
 
     private getDisplays(req: Request, res: Response) {
+        console.log('get all displays');
         res.send(Data.data);
     }
 
@@ -68,11 +69,12 @@ export class DisplayController {
         // 
         const dataIndex = Data.findDisplayInConfig(req.params.id);
         // dataIndex.roomIndex
-        this.updateDisplayState(dataIndex, req.body);
+        this.updateDisplayState(dataIndex, req.body.display);
 
         res.send(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
     }
     private updateDisplayState(dataIndex: any, displayObject: any) {
+        console.log('try to update display: ' + displayObject.displayId);
         for (const key in displayObject) {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {
@@ -81,7 +83,8 @@ export class DisplayController {
                             Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key][subkey] = displayObject[key][subkey];
                         }
                     }
-                } else if (key === 'displayId' || key === 'friendlyName' || key === 'timer') {
+                } else if (key === 'displayId' || key === 'friendlyName' || key === 'timer' || key === 'target' 
+                || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate') {
                     // 
                 } else {
                     Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key] = displayObject[key];
@@ -93,19 +96,17 @@ export class DisplayController {
 
     private clearDisplay(req: Request, res: Response) {
         // clear all listed displays
-        const todo = req.body;
+        const todo = req.body.displayIds;
+        console.log(req.body);
         todo.forEach((element: any) => {
-            const dataIndex = Data.findDisplayInConfig(element.displayId);
+            const dataIndex = Data.findDisplayInConfig(element);
             if (dataIndex.displayIndex !== -1) {
                 Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].clear();
             } else {
-                console.error('Display ' + element.displayId + ' does not exist. It can not be cleared.');
+                console.error('Display ' + element + ' does not exist. It can not be cleared.');
             }
         });
-
-        res.json({
-            success: 'true',
-        });
+        res.send(Data.data);
     }
 
     private initRoutes()    {
