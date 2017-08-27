@@ -4,7 +4,7 @@ var App_1 = require("./App");
 var DisplayController_1 = require("./controllers/DisplayController");
 var DataClass_1 = require("./DataClass");
 var socketIo = require("socket.io");
-var port = normalizePort(process.env.PORT || 80);
+var port = normalizePort(process.env.PORT || 4100);
 var server = App_1.default.listen(port, function () {
     console.log('\x1b[40m' + ("Express listening on port " + port));
     DataClass_1.default.importConfig();

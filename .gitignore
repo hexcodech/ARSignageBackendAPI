@@ -66,3 +66,4 @@ typings/
 .idea
 repo-key
 repo-key.pub
+test/.DS_Store

@@ -5,12 +5,12 @@ import Data from './DataClass';
 
 import * as socketIo from 'socket.io';
 
-const port = normalizePort(process.env.PORT || 80);
+const port = normalizePort(process.env.PORT || 4100);
 
 const server = App.listen(port, () => {
     console.log('\x1b[40m' + `Express listening on port ${port}`);
     Data.importConfig();
-    
+
 });
 
 function normalizePort(val: number|string): number|string|boolean    {
@@ -25,7 +25,7 @@ function normalizePort(val: number|string): number|string|boolean    {
 }
 
 function sendAppStates(socket: any) {
-    
+
     for (const room of Data.data) {
         room.timer.update();
         for (const display of room.displays) {
@@ -59,5 +59,5 @@ io.on('connection', (socket) => {
         console.log('display disconnected: ' + lastSegment);
       });
   });
-  
+
 setInterval(sendAppStates, 1000, io);
