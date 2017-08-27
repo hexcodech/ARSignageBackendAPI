@@ -67,3 +67,4 @@ typings/
 repo-key
 repo-key.pub
 test/.DS_Store
+.DS_Store
