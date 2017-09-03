@@ -44,6 +44,11 @@ io.on('connection', function (socket) {
         console.log('time remaining: ' + timeremaining);
         DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining = timeremaining;
         console.log(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining);
+        if (timeremaining === 0) {
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.headerVisible = false;
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.type = null;
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.url = null;
+        }
     });
     socket.on('disconnect', function () {
         DisplayController_1.default.removeDisplay(lastSegment);

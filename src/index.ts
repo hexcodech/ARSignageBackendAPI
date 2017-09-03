@@ -52,6 +52,12 @@ io.on('connection', (socket) => {
         console.log('time remaining: ' + timeremaining);
         Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining = timeremaining;
         console.log(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining);
+        if (timeremaining === 0) {
+            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.headerVisible = false;
+            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.type = null;
+            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.url = null;
+
+        }
     });
 
     socket.on('disconnect', () => {
