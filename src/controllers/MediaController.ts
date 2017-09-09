@@ -21,7 +21,10 @@ export class MediaController {
 
         const folders = fs.readdirSync(__dirname + dir);
         folders.forEach((f: any) => {
-            folderlist.push(f);
+            const stats = fs.statSync(__dirname + dir + '/' + f);
+            if (stats.isDirectory) {
+                folderlist.push(f);
+            }
         });
         this.getFiles(dir, folderlist, res);
         
@@ -33,9 +36,13 @@ export class MediaController {
         folderlist.forEach((folder) => {
             const files = fs.readdirSync(__dirname + dir + '/' + folder);
             files.forEach((file: any) => {
-                filelist.push({name : file, roomId: folder, 
-                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
-                     url: encodeURI('http://' + Data.myIp + ':80/static/' + folder + '/' + file)});
+                const stats = fs.statSync(__dirname + dir + '/' + folder + '/' + file);
+                if (stats.isFile) {
+                    filelist.push({name : file, roomId: folder, 
+                        type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
+                         url: encodeURI('http://' + Data.myIp + ':80/static/' + folder + '/' + file)});
+                }
+
             });
         });
         res.send(filelist);

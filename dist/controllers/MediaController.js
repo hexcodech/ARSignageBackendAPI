@@ -17,7 +17,10 @@ var MediaController = (function () {
         var fs = require('fs');
         var folders = fs.readdirSync(__dirname + dir);
         folders.forEach(function (f) {
-            folderlist.push(f);
+            var stats = fs.statSync(__dirname + dir + '/' + f);
+            if (stats.isDirectory) {
+                folderlist.push(f);
+            }
         });
         this.getFiles(dir, folderlist, res);
     };
@@ -27,9 +30,12 @@ var MediaController = (function () {
         folderlist.forEach(function (folder) {
             var files = fs.readdirSync(__dirname + dir + '/' + folder);
             files.forEach(function (file) {
-                filelist.push({ name: file, roomId: folder,
-                    type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
-                    url: encodeURI('http://' + DataClass_1.default.myIp + ':80/static/' + folder + '/' + file) });
+                var stats = fs.statSync(__dirname + dir + '/' + folder + '/' + file);
+                if (stats.isFile) {
+                    filelist.push({ name: file, roomId: folder,
+                        type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
+                        url: encodeURI('http://' + DataClass_1.default.myIp + ':80/static/' + folder + '/' + file) });
+                }
             });
         });
         res.send(filelist);
