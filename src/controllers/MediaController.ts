@@ -1,5 +1,6 @@
 import {Request, Response, Router} from 'express';
 import * as mime from 'mime-types';
+import Config from '../Config';
 import Data from '../DataClass';
 
 export class MediaController {
@@ -40,7 +41,7 @@ export class MediaController {
                 if (stats.isFile) {
                     filelist.push({name : file, roomId: folder, 
                         type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
-                         url: encodeURI('http://' + Data.myIp + ':80/static/' + folder + '/' + file)});
+                         url: encodeURI('http://' + Data.myIp + ':' + Config.PORT + '/static/' + folder + '/' + file)});
                 }
 
             });

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var mime = require("mime-types");
+var Config_1 = require("../Config");
 var DataClass_1 = require("../DataClass");
 var MediaController = (function () {
     function MediaController() {
@@ -34,7 +35,7 @@ var MediaController = (function () {
                 if (stats.isFile) {
                     filelist.push({ name: file, roomId: folder,
                         type: mime.lookup(__dirname + dir + '/' + folder + '/' + file),
-                        url: encodeURI('http://' + DataClass_1.default.myIp + ':80/static/' + folder + '/' + file) });
+                        url: encodeURI('http://' + DataClass_1.default.myIp + ':' + Config_1.default.PORT + '/static/' + folder + '/' + file) });
                 }
             });
         });

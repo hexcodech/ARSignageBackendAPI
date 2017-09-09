@@ -1,11 +1,12 @@
 import App from './App';
 
+import Config from './Config';
 import DisplayController from './controllers/DisplayController';
 import Data from './DataClass';
 
 import * as socketIo from 'socket.io';
 
-const port = normalizePort(process.env.PORT || 4100);
+const port = normalizePort(process.env.PORT || Config.PORT);
 
 const server = App.listen(port, () => {
     console.log('\x1b[40m' + `Express listening on port ${port}`);
