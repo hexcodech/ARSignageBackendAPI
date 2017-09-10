@@ -1,6 +1,8 @@
 # frontend & dashboard & media folder
-
-
+media/*
+dashboard/*
+frontend/*
+config.json
 
 
 # Logs
