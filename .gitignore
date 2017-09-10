@@ -1,7 +1,7 @@
 # frontend & dashboard & media folder
-frontend
-dashboard
-media
+frontend/
+dashboard/
+media/
 config.json
 
 

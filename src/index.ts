@@ -50,14 +50,12 @@ io.on('connection', (socket) => {
     // sendAppStates(io);
     socket.on('updateRemaining', (timeremaining) => {
         const dataIndex = Data.findSocketIdInConfig(socket.id);
-        console.log('time remaining: ' + timeremaining);
+        // console.log('time remaining: ' + timeremaining);
         Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining = timeremaining;
-        console.log(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining);
+        // console.log(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining);
         if (timeremaining === 0) {
-            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.headerVisible = true;
-            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.type = null;
-            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.url = null;
-
+            console.log('video finished');
+            Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].clear();
         }
     });
 
