@@ -84,7 +84,7 @@ export class DisplayController {
                         }
                     }
                 } else if (key === 'displayId' || key === 'friendlyName' || key === 'timer' || key === 'target' 
-                || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate') {
+                || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate' || key === 'socketId') {
                     // 
                 } else {
                     Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key] = displayObject[key];

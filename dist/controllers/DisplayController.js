@@ -68,7 +68,7 @@ var DisplayController = (function () {
                     }
                 }
                 else if (key === 'displayId' || key === 'friendlyName' || key === 'timer' || key === 'target'
-                    || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate') {
+                    || key === 'lastUpdated' || key === 'isFetching' || key === 'didInvalidate' || key === 'socketId') {
                 }
                 else {
                     DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key] = displayObject[key];
