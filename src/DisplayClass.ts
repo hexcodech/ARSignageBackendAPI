@@ -36,7 +36,7 @@ export default class Display {
     }
     
     public clear() {
-        this.media.headerVisible = false;
+        this.media.headerVisible = true;
         this.media.text = null;
         this.media.type = null;
         this.media.url = null;

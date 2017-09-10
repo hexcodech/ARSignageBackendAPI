@@ -26,7 +26,7 @@ var Display = (function () {
         console.log('New Display with id ' + displayId + ' created.');
     }
     Display.prototype.clear = function () {
-        this.media.headerVisible = false;
+        this.media.headerVisible = true;
         this.media.text = null;
         this.media.type = null;
         this.media.url = null;
