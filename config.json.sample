@@ -1,0 +1,25 @@
+[{
+		"roomId": "cinema",
+		"friendlyName": "Cinema",
+		"displays": [{
+			"displayId": "ar1-foyer",
+			"friendlyName": "Foyer"
+		},
+		{
+			"displayId": "ar1-room1",
+			"friendlyName": "Room 1"
+		}]
+	},
+	{
+		"roomId": "zapped",
+		"friendlyName": "ZAPPED",
+		"displays": [{
+			"displayId": "ar2-hotel",
+			"friendlyName": "Hotel"
+		},
+		{
+			"displayId": "ar2-room2",
+			"friendlyName": "Room 2"
+		}]
+	}
+]
