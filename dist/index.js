@@ -42,13 +42,10 @@ io.on('connection', function (socket) {
     console.log('display connected: ' + lastSegment);
     socket.on('updateRemaining', function (timeremaining) {
         var dataIndex = DataClass_1.default.findSocketIdInConfig(socket.id);
-        console.log('time remaining: ' + timeremaining);
         DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining = timeremaining;
-        console.log(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.remaining);
         if (timeremaining === 0) {
-            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.headerVisible = true;
-            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.type = null;
-            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].media.url = null;
+            console.log('video finished');
+            DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].clear();
         }
     });
     socket.on('disconnect', function () {

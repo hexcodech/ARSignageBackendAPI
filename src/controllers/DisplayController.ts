@@ -79,7 +79,7 @@ export class DisplayController {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {
                     for (const subkey in displayObject[key]) {
-                        if (displayObject[key].hasOwnProperty(subkey) && displayObject[key][subkey] !== null) {
+                        if (displayObject[key].hasOwnProperty(subkey) && displayObject[key][subkey] !== null || subkey !== remaining) {
                             Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key][subkey] = displayObject[key][subkey];
                         }
                     }

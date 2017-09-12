@@ -30,6 +30,7 @@ var Display = (function () {
         this.media.text = null;
         this.media.type = null;
         this.media.url = null;
+        this.media.remaining = null;
         console.log('Display ' + this.displayId + ' has been cleared.');
     };
     return Display;
