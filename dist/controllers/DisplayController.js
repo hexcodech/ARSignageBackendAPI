@@ -53,11 +53,17 @@ var DisplayController = (function () {
     };
     DisplayController.prototype.updateDisplay = function (req, res) {
         var dataIndex = DataClass_1.default.findDisplayInConfig(req.params.id);
-        this.updateDisplayState(dataIndex, req.body.display);
-        res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
+        if (dataIndex.roomIndex === -1) {
+            res.send('Error, can not find screen: ' + req.params.id);
+            console.error('Error, can not find screen: ' + req.params.id);
+        }
+        else {
+            this.updateDisplayState(dataIndex, req.body.display);
+            res.send(DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
+        }
     };
     DisplayController.prototype.updateDisplayState = function (dataIndex, displayObject) {
-        console.log('try to update display: ' + displayObject.displayId);
+        console.log('try to update display: ' + DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].displayId);
         for (var key in displayObject) {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {

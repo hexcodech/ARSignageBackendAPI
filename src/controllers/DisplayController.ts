@@ -69,12 +69,17 @@ export class DisplayController {
         // 
         const dataIndex = Data.findDisplayInConfig(req.params.id);
         // dataIndex.roomIndex
-        this.updateDisplayState(dataIndex, req.body.display);
-
-        res.send(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
+        if (dataIndex.roomIndex === -1) {
+            res.send('Error, can not find screen: ' + req.params.id);
+            console.error('Error, can not find screen: ' + req.params.id);
+        } else {
+            this.updateDisplayState(dataIndex, req.body.display);
+            res.send(Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex]);
+        }    
     }
+
     private updateDisplayState(dataIndex: any, displayObject: any) {
-        console.log('try to update display: ' + displayObject.displayId);
+        console.log('try to update display: ' + Data.data[dataIndex.roomIndex].displays[dataIndex.displayIndex].displayId);
         for (const key in displayObject) {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {
