@@ -62,7 +62,7 @@ var DisplayController = (function () {
             if (displayObject.hasOwnProperty(key) && displayObject[key] !== null) {
                 if (key === 'media') {
                     for (var subkey in displayObject[key]) {
-                        if (displayObject[key].hasOwnProperty(subkey) && displayObject[key][subkey] !== null || subkey !== remaining) {
+                        if (displayObject[key].hasOwnProperty(subkey) && displayObject[key][subkey] !== null || subkey !== 'remaining') {
                             DataClass_1.default.data[dataIndex.roomIndex].displays[dataIndex.displayIndex][key][subkey] = displayObject[key][subkey];
                         }
                     }
